@@ -1,0 +1,259 @@
+import QuestionOne from "@/Components/questionOne";
+import QuestionTwo from "@/Components/questionTwo";
+import Results from "@/Components/results";
+import Head from "next/head";
+import Title from "../Components/title";
+import { useState } from "react";
+import Router from "next/router";
+
+export default function Home() {
+  const [electricity, setElectricity] = useState(0);
+  const [lpg, setLPG] = useState(0);
+  const [lpgUnit, setLPGUnit] = useState(0);
+  const [naturalGas, setnaturalGas] = useState(0);
+  const [naturalGasUnit, setnaturalGasUnit] = useState(0);
+  const [coal, setCoal] = useState(0);
+  const [coalUnit, setCoalUnit] = useState(0);
+  const [bioGas, setBioGas] = useState(0);
+  const [bioGasUnit, setBioGasUnit] = useState(0);
+  const [onsiteHeat, setOnsiteHeat] = useState(0);
+  const [districtHeat, setDistrictHeat] = useState(0);
+  const [waterSupply, setWaterSupply] = useState(0);
+  const [waterSupplyUnit, setWaterSupplyUnit] = useState(0);
+
+  const values = [
+    electricity,
+    lpg,
+    naturalGas,
+    coal,
+    bioGas,
+    onsiteHeat,
+    districtHeat,
+    waterSupply,
+  ];
+  const units = [
+    lpgUnit,
+    naturalGasUnit,
+    coalUnit,
+    bioGasUnit,
+    waterSupplyUnit,
+  ];
+
+  const powerValues = values.map(function (item) {
+    return Number(item);
+  });
+
+  const powerUnits = units.map(function (item) {
+    return Number(item);
+  });
+
+  console.log(values);
+  console.log(powerValues);
+  console.log(units);
+  console.log(powerUnits);
+
+  const cFootprint =
+    (powerValues[0] * 0.55866 * 12 +
+      powerValues[1] * powerUnits[0] * 12 +
+      powerValues[2] * powerUnits[1] * 12 +
+      powerValues[3] * powerUnits[2] * 12 +
+      powerValues[4] * powerUnits[3] * 12 +
+      powerValues[5] * 12 * 0.17073 +
+      powerValues[6] * 12 * 0.17073 +
+      powerValues[7] * powerUnits[4] * 12) /
+    1000;
+
+  const powerFootprint = cFootprint.toFixed(3);
+
+  function sendProps() {
+    Router.push({
+      pathname: "/food",
+      query: { powerFootprint },
+    });
+  }
+
+  const questions = [
+    {
+      id: 1,
+      title: "How much electricity do you consume per year? (kW)",
+      name: "Electricity",
+      category: "Power Consumption",
+      image: "images/power/idea.png",
+    },
+
+    {
+      id: 2,
+      title: "LPG used (per month)?",
+      name: "LPG",
+      category: "Power Consumption",
+      image: "images/power/lpg.png",
+      units: [
+        {
+          id: 1,
+          name: "Metric Tonnes",
+          value: "2939.29",
+        },
+        {
+          id: 2,
+          name: "Liters",
+          value: "1.55709",
+        },
+        {
+          id: 3,
+          name: "kwh",
+          value: "0.20297",
+        },
+      ],
+    },
+    {
+      id: 3,
+      title: "Natural Gas used (per month)?",
+      name: "Natural Gas",
+      category: "Power Consumption",
+      image: "images/power/flame.png",
+      units: [
+        {
+          id: 1,
+          name: "Cubic Meters",
+          value: "2.02135",
+        },
+        {
+          id: 2,
+          name: "kWh",
+          value: "0.20297",
+        },
+        {
+          id: 3,
+          name: "Metric Tonnes",
+          value: "2538.48",
+        },
+      ],
+    },
+    {
+      id: 4,
+      title: "Coal (Domestic) used (per month)?",
+      name: "Coal",
+      category: "Power Consumption",
+      image: "images/power/coal.png",
+      units: [
+        {
+          id: 1,
+          name: "Metric Tonnes",
+          value: "2883.26",
+        },
+        {
+          id: 2,
+          name: "kwh",
+          value: "0.36276",
+        },
+      ],
+    },
+    {
+      id: 5,
+      title: "Bio-gas consumed (per month)?",
+      name: "Bio Gas",
+      category: "Power Consumption",
+      image: "images/power/natural-gas.png",
+      units: [
+        {
+          id: 1,
+          name: "Metric Tonnes",
+          value: "1.21518",
+        },
+        {
+          id: 2,
+          name: "kWh",
+          value: "0.00022",
+        },
+      ],
+    },
+    {
+      id: 6,
+      title: "Onsite heat and steam per month? (kWh)",
+      name: "Onsite Heat",
+      category: "Power Consumption",
+      image: "images/power/factory.png",
+    },
+    {
+      id: 7,
+      title: "District heat and steam per month? (kWh)",
+      name: "District Heat",
+      category: "Power Consumption",
+      image: "images/power/factory.png",
+    },
+    {
+      id: 8,
+      title: "Water Supply (per month)?",
+      name: "Water Supply",
+      category: "Power Consumption",
+      image: "images/power/faucet.png",
+      units: [
+        {
+          id: 1,
+          name: "Cubic Meters",
+          value: "0.149",
+        },
+        {
+          id: 2,
+          name: "Million Liters",
+          value: "149",
+        },
+      ],
+    },
+  ];
+
+  return (
+    <>
+      <Head>
+        <title>Power Consumption</title>
+        <meta name="description" content="Generated by create next app" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <main className="flex flex-col items-center justify-center py-5 overflow-visible">
+        <div className="p-4 flex flex w-10/12 bg-gray-100 rounded-t-xl">
+          <Title name="Power Consumption" />
+        </div>
+        <div className="h-20 mb-5 flex items-center justify-center w-10/12">
+          <Results value={powerFootprint} sendData={sendProps} />
+        </div>
+        <div className="my-2 flex flex-col w-10/12">
+          <div className="flex flex-wrap gap-1 justify-center overflow-y-scroll h-96 p-2">
+            <QuestionOne questions={questions[0]} setValue={setElectricity} />
+            <QuestionTwo
+              questions={questions[1]}
+              setValue={setLPG}
+              setUnit={setLPGUnit}
+            />
+            <QuestionTwo
+              questions={questions[2]}
+              setValue={setnaturalGas}
+              setUnit={setnaturalGasUnit}
+            />
+            <QuestionTwo
+              questions={questions[3]}
+              setValue={setCoal}
+              setUnit={setCoalUnit}
+            />
+            <QuestionTwo
+              questions={questions[4]}
+              setValue={setBioGas}
+              setUnit={setBioGasUnit}
+            />
+            <QuestionOne questions={questions[5]} setValue={setOnsiteHeat} />
+            <QuestionOne questions={questions[6]} setValue={setDistrictHeat} />
+            <QuestionTwo
+              questions={questions[7]}
+              setValue={setWaterSupply}
+              setUnit={setWaterSupplyUnit}
+            />
+          </div>
+        </div>
+        {/* <div className="my-2 flex items-center justify-center w-3/4">
+          <Results value={powerFootprint} sendData={sendProps} />
+        </div> */}
+      </main>
+    </>
+  );
+}
